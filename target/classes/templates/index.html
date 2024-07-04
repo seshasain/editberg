@@ -1,16 +1,34 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
-	th:replace="base::layout(~{::section})">
+      th:replace="base::layout(~{::section})">
 <head>
-<meta charset="ISO-8859-1">
-<title>Insert title here</title>
-
+    <meta charset="ISO-8859-1">
+    <title>Insert title here</title>
 </head>
 <body>
-	<section>
-		<h1>Index Page</h1>
 
-	</section>
+<section>
+    <h1>Home Page</h1>
+    <button id="fetchUsersButton">Fetch Users</button>
+    <div id="userData"></div>
+</section>
+
+<script>
+    document.getElementById('fetchUsersButton').addEventListener('click', function() {
+        fetch('/users')
+            .then(response => response.json())
+            .then(data => {
+                const userDataDiv = document.getElementById('userData');
+                userDataDiv.innerHTML = '';
+                data.forEach(user => {
+                    const userDiv = document.createElement('div');
+                    userDiv.textContent = `ID: ${user.userid}, Name: ${user.username}`;
+                    userDataDiv.appendChild(userDiv);
+                });
+            })
+            .catch(error => console.error('Error fetching user data:', error));
+    });
+</script>
 
 </body>
 </html>

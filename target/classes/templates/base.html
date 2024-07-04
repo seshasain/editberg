@@ -28,7 +28,7 @@
 			        
 			        <!-- Check if user name is not null -->
 			        <th:block th:if="${user != null}">
-			            <li class="nav-item"><a class="nav-link active" aria-current="page" th:text="${user.name}" href="/user/profile"></a></li>
+			            <li class="nav-item"><a class="nav-link active" aria-current="page" th:text="${user.username}" href="/user/profile"></a></li>
 			        </th:block>
 			        
 			        <th:block th:if="${user == null}">

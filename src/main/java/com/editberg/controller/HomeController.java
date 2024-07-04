@@ -1,6 +1,7 @@
 package com.editberg.controller;
 
 import java.security.Principal;
+import java.time.LocalDateTime;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -10,9 +11,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import com.editberg.entity.User;
-import com.editberg.repository.UserRepo;
+import com.editberg.repository.UserRepository;
 import com.editberg.service.UserService;
-import com.fasterxml.jackson.annotation.JsonCreator.Mode;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -23,7 +23,7 @@ public class HomeController {
 	private UserService userService;
 
 	@Autowired
-	private UserRepo userRepo;
+	private UserRepository userRepo;
 
 	@ModelAttribute
 	public void commonUser(Principal p, Model m) {
@@ -69,7 +69,9 @@ public class HomeController {
 		if (userRepo.findByEmail(user.getEmail()) != null)
 			session.setAttribute("msg", "User Already Exist");
 		else {
-			User u = userService.saveUser(user);
+			user.setCreatedAt(LocalDateTime.now());
+		    user.setRole("ROLE_MEMBER");
+			User u = userService.save(user);
 
 			if (u != null) {
 				// System.out.println("save sucess");
